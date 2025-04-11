@@ -6,7 +6,15 @@
 
 Cipher Hunter is a puzzle game style message board web application where users can create and share secret codes or 
 encrypted messages for others to solve. Users can write coded messages with hints, post them for others to see,
-and attempt to solve messages posted by others. 
+and attempt to solve messages posted by others. I want also try and focus on the user experience and experiment
+with cool looking styles and interactive elements. 
+
+For this project, I decided not to use any framework or anything like that, but stick to plain vanilla html,css, and javascript
+to be able to further cement my understanding of the topics and subjects we have learnt about over this semester and not waste any time
+having to learn a new framework that would take away from this project. 
+
+I want to leverage the database that we created and used in the last few assignments to be able to store users, puzzles, and scores that 
+I can store and users can access. 
 
 ### Main Features:
 Users will be able to: 
@@ -33,6 +41,38 @@ These features depend on if there is enough time to implement them
 
 ## Project Wireframe
 
-TODO: Replace the wireframe below with you own design.
+Instead of using moqups.com, I am more familiar with Figma, an interactive and collaborative UI design tool. 
+Attached below is the initial mockup of the landing page of my website and a few other pages for now. 
 
-![wireframe](wireframe-example.png)
+Link: https://www.figma.com/design/gKnSoUbEWMdJKp4coVOE6C/Untitled?node-id=0-1&t=9UJYk4iHn7fiMd6y-1
+
+NOTE: This is not what the final product will look like but is a rough idea of where the buttons will go and the basic layout
+
+<br>
+
+![image](https://github.com/user-attachments/assets/f7d10fee-a87b-455f-b41d-055a2d344207)
+
+<br>
+
+This is the create page where the user is able to create a secret code word for users to solve! There will be 
+many different filters and options for users to be able to customize their puzzle and change the difficulty 
+
+<br>
+
+![image](https://github.com/user-attachments/assets/6cd9d4cd-0013-4f87-ae03-9cf3655a710e)
+
+<br>
+
+This is a sample leaderboard where users will be able to see the performace of others and compare themselves to the top puzzle solvers
+
+<br>
+
+![image](https://github.com/user-attachments/assets/52c79a24-4b24-406d-a89b-424dabefaea0)
+
+<br>
+
+And lastly, this is an image of the entire thing with the connections between the buttons and the pages.
+
+![image](https://github.com/user-attachments/assets/7f032565-c35d-4396-b9ea-8476143ca467)
+
+
