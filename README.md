@@ -25,7 +25,7 @@ Users will be able to:
 - Attempt to solve messages submitted by others
 - Filter through secret messages based off their author, solved status, etc
 - View leaderboard and other stats
-- Provide short tutorials on basic cryptogrophy concepts
+- Have access short tutorials on basic cryptogrophy concepts
 
 ### Optional features
 These features depend on if there is enough time to implement them
