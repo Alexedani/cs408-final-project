@@ -13,8 +13,10 @@ For this project, I decided not to use any framework or anything like that, but 
 to be able to further cement my understanding of the topics and subjects we have learnt about over this semester and not waste any time
 having to learn a new framework that would take away from this project. 
 
-I want to leverage the database that we created and used in the last few assignments to be able to store users, puzzles, and scores that 
-I can store and users can access. 
+The data that my project will manage will be users, user information, and puzzles created by users that can be loaded dynamically into the site. I want to leverage the database that we created and used in the last few assignments to be able to store users, puzzles, and scores that I can store and users can access.
+
+The home page will dynamically update based on the number of puzzles that have been created and stored in the database. Moreover, the leaderboard functionality follows the
+same way as I will display a list of all users dynamiclly and add them to the leaderboard with their information from the data base. 
 
 ### Main Features:
 Users will be able to: 
