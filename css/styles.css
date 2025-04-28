@@ -1,4 +1,4 @@
-/* General Reset */
+
 * {
     margin: 0;
     padding: 0;
@@ -30,7 +30,7 @@
   
   .sidebar .logo h1 {
     font-size: 24px;
-    color: #ffd700; /* gold color for "Cipher Hunter" */
+    color: #ffd700; 
     text-align: center;
   }
   
@@ -275,4 +275,74 @@
   .signup-button:hover {
     background-color: #666;
   }
+
+  /* Create Cipher Page */
+.create-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a1a1a;
+  }
+  
+  .create-container {
+    background-color: #2c2c2c;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+  }
+  
+  .create-container h1 {
+    font-size: 32px;
+    color: #ffd700;
+    margin-bottom: 20px;
+  }
+  
+  .create-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #f0f0f0;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  .create-button {
+    background-color: #ffd700;
+    color: #1a1a1a;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .create-button:hover {
+    background-color: #e6c200;
+  }
+  
   
