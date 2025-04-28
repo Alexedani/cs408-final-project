@@ -2,37 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="../css/header.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cipher Hunter - Home</title>
+  <link rel="stylesheet" href="../css/styles.css"> <!-- link your CSS -->
 </head>
 <body>
 
-      <!--Header-->
-      <header class="mainHeader">
-        <nav class="HeaderNav">
-            <a href="home.html"><img src="../images/home.png" alt="home"></a>
-            <!-- <a href="settings.html"><img src="../images/settings.png" alt="settings"></a> -->
-            <a href="#" id="settings-btn">
-                <img src="../images/settings.png" alt="settings">
-            </a>
-            
-            <div id="settings-dropdown" class="settings-dropdown hidden">
-                <!-- Settings Header -->
-                <div class="settings-header">
-                  <strong>Settings</strong>
-                </div>
-              
-                
-                <!-- Logout Option -->
-                <button id="logout-btn" onclick="logoutUser()">Logout</button>
-              </div>
-              
-            <a href="profile.html"><img src="../images/profile.png" alt="profile"></a>
-        </nav>
-        <h1 class="pageNameLabel">Home</h1>
-        <label class="coinsLabel" id="coins">Coins: </label>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/fedora-logo.png" alt="Cipher Hunter Logo" />
+      <h1>Cipher Hunter</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <button onclick="location.href='create.html'">Create Puzzle</button>
+      <button onclick="location.href='leaderboard.html'">Leaderboard</button>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <input type="text" placeholder="Search puzzles..." id="searchBar">
+      <div class="nav-links">
+        <a href="create.html">Create</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="profile.html">Profile</a>
+        <a href="signin.html" class="auth-link">Sign In / Register</a>
+      </div>
     </header>
-  
+
+    <!-- Puzzle Feed -->
+    <section class="puzzle-feed" id="puzzleFeed">
+      <!-- Puzzles will be inserted here dynamically with JavaScript -->
+      <div class="puzzle-card">
+        <h2>Puzzle Title</h2>
+        <p>Difficulty: Easy</p>
+        <button>Play</button>
+      </div>
+
+      <!-- More puzzles... -->
+    </section>
+
+  </main>
+
+  <script src="main.js"></script> <!-- your JavaScript file -->
 </body>
 </html>

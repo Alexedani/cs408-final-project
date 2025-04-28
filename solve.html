@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+
+      <!--Header-->
+      <header class="mainHeader">
+        <nav class="HeaderNav">
+            <a href="home.html"><img src="../images/home.png" alt="home"></a>
+            <!-- <a href="settings.html"><img src="../images/settings.png" alt="settings"></a> -->
+            <a href="#" id="settings-btn">
+                <img src="../images/settings.png" alt="settings">
+            </a>
+            
+            <div id="settings-dropdown" class="settings-dropdown hidden">
+                <!-- Settings Header -->
+                <div class="settings-header">
+                  <strong>Settings</strong>
+                </div>
+              
+                
+                <!-- Logout Option -->
+                <button id="logout-btn" onclick="logoutUser()">Logout</button>
+              </div>
+              
+            <a href="profile.html"><img src="../images/profile.png" alt="profile"></a>
+        </nav>
+        <h1 class="pageNameLabel">Solve</h1>
+        <label class="coinsLabel" id="coins">Coins: </label>
+    </header>
+  
+</body>
+</html>
