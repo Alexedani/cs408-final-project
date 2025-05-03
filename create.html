@@ -8,16 +8,37 @@
 </head>
 <body class="create-page">
 
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="images/fedora-logo.png" alt="Cipher Hunter Logo" />
+        <h1>Cipher Hunter</h1>
+      </div>
+  
+      <nav class="sidebar-nav">
+        <button onclick="location.href='home.html'">Home</button>
+        <button onclick="location.href='create.html'">Create Puzzle</button>
+        <button onclick="location.href='leaderboard.html'">Leaderboard</button>
+        <button onclick="location.href='profile.html'">Profile</button>
+      </nav>
+    </aside>
+
   <div class="create-container">
     <h1>Create a New Cipher</h1>
 
     <form class="create-form">
+
+      <!-- Step 0: Cipher Name -->
+    <div class="form-group">
+      <label for="cipher-name">Cipher Name</label>
+      <input type="text" id="cipher-name" placeholder="Enter a name for your cipher" required>
+    </div>
+
       <!-- Step 1: Choose Cipher Type -->
       <div class="form-group">
-        <label for="cipher-type">Cipher Type</label>
+        <label for="cipher-type">Cipher Type (More types coming soon)</label>
         <select id="cipher-type" required>
           <option value="caesar" selected>Caesar Cipher</option>
-          <!-- Later you can add more options like Vigenère, Substitution, etc. -->
         </select>
       </div>
 
@@ -49,11 +70,87 @@
 
       <!-- Step 3: Create Cipher Button -->
       <div class="form-buttons">
-        <button type="submit" class="create-button">Create</button>
+        <button type="submit" class="create-button" onclick="addCipherToDatabase(event)">Create</button>
       </div>
     </form>
 
   </div>
 
+
+  <script>
+  
+    function caesarEncrypt(message, shift) {
+      const aCode = "a".charCodeAt(0);
+      const ACode = "A".charCodeAt(0);
+      const alphabetSize = 26;
+  
+      return message.split("").map(char => {
+        if (char >= "a" && char <= "z") {
+          return String.fromCharCode(((char.charCodeAt(0) - aCode + shift) % alphabetSize) + aCode);
+        } else if (char >= "A" && char <= "Z") {
+          return String.fromCharCode(((char.charCodeAt(0) - ACode + shift) % alphabetSize) + ACode);
+        } else {
+          return char;
+        }
+      }).join("");
+    }
+  
+    function addCipherToDatabase() {
+      event.preventDefault();
+      const cipherName = document.getElementById("cipher-name").value.trim();
+      const type = document.getElementById("cipher-type").value;
+      const message = document.getElementById("plain-text").value.trim();
+      const shift = parseInt(document.getElementById("shift-amount").value);
+      const hint = document.getElementById("hint").value.trim();
+      const username = localStorage.getItem("username");
+
+      if (!cipherName || !message || isNaN(shift)) {
+        alert("Please enter a valid cipher name, message, and shift.");
+        return;
+      }
+
+      const encryptedMessage = caesarEncrypt(message, shift);
+
+      const data = JSON.stringify({
+        id: Date.now().toString(),
+        username: null,
+        password: null,
+        userScore: null,
+        ciphername: cipherName,
+        ciphertype: type,
+        ciphermessage: message,
+        ciphertext: encryptedMessage,
+        cipherhint: hint,
+        cipherauthor: username,
+        puzzlesSolved: null,
+        solvedBy: "[]"
+      });
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", "https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items");
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          console.log("Success:", xhr.responseText);
+          alert("Cipher created!");
+          window.location = '../home.html';
+        } else {
+          console.error("Request failed:", xhr.status, xhr.responseText);
+          alert("Failed to create cipher.");
+        }
+      };
+
+      xhr.onerror = function () {
+        console.error("Request error:", xhr.statusText);
+        alert("Network error occurred.");
+      };
+
+      xhr.send(data);
+    }
+
+
+  </script>
+  
 </body>
 </html>

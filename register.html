@@ -25,11 +25,107 @@
       </div>
 
       <div class="form-buttons">
-        <button type="submit" class="login-button">Sign Up</button>
+        <button type="submit" class="login-button" onclick="createUser(event)">Sign Up</button>
         <button type="button" class="signup-button" onclick="location.href='index.html'">Back to Login</button>
       </div>
     </form>
   </div>
+
+  <script>
+    function createUser(event) {
+      event.preventDefault();
+  
+      // Step 1: Get user input
+      const username = document.getElementById("new-username").value.trim();
+      const password = document.getElementById("new-password").value.trim();
+  
+      // Log user input
+      console.log("User input - Username:", username);
+      console.log("User input - Password:", password);
+  
+      // Validate user input
+      if (!username || !password) {
+        alert("Please enter both username and password.");
+        return;
+      }
+  
+      // Step 2: Get all users and check if username exists
+      let getXhr = new XMLHttpRequest();
+      getXhr.addEventListener("load", function () {
+        try {
+          const data = JSON.parse(this.responseText);
+  
+          // Log the data received from GET request
+          console.log("GET response data:", data);
+  
+          const usernameExists = data.some(item => item.username === username);
+  
+          if (usernameExists) {
+            alert("Username already exists. Please choose a different one.");
+            return;
+          }
+  
+          // Step 3: Create a unique ID (timestamp for simplicity)
+          const uniqueId = Date.now();
+  
+          // Prepare the user data object
+          const userData = JSON.stringify({
+            "id": String(uniqueId),
+            "username": username,
+            "password": password,
+            "userScore": "0",
+            "ciphername": null,
+            "ciphertype": null,
+            "ciphermessage": null,
+            "ciphertext": null,
+            "cipherhint": null,
+            "cipherauthor": null,
+            "puzzlesSolved": "0",
+            "solvedBy": null
+          });
+          
+          localStorage.setItem("username", username);
+
+          // Log the data being sent
+          console.log("Sending data to PUT request:", userData);
+  
+          // Step 4: Send PUT request to create the user
+          let putXhr = new XMLHttpRequest();
+          putXhr.open("PUT", "https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items");
+          putXhr.setRequestHeader("Content-Type", "application/json");
+  
+          // Add event listener to handle the response
+          putXhr.onreadystatechange = function () {
+            if (putXhr.readyState === 4) {  // Request is complete
+              if (putXhr.status === 200) {  // Successful request
+                alert("Account created and successfully added to the database!");
+                console.log("PUT request successful, response:", putXhr.responseText);
+                window.location = '../home.html';
+              } else {
+                alert("Failed to add item. Status: " + putXhr.status);
+                console.error("PUT request error:", putXhr.responseText); 
+              }
+            }
+          };
+  
+          // Send the PUT request
+          putXhr.send(userData);
+  
+        } catch (error) {
+          console.error("Error parsing GET response:", error);
+          alert("An error occurred while checking for existing users.");
+        }
+      });
+  
+      // Send the GET request to fetch users
+      getXhr.open("GET", "https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items");
+      getXhr.send();
+
+    }
+  </script>
+  
+  
+  
 
 </body>
 </html>

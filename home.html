@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cipher Hunter - Home</title>
-  <link rel="stylesheet" href="../css/styles.css"> <!-- link your CSS -->
+  <link rel="stylesheet" href="../css/styles.css"> 
 </head>
 <body>
 
@@ -14,9 +14,14 @@
       <img src="images/fedora-logo.png" alt="Cipher Hunter Logo" />
       <h1>Cipher Hunter</h1>
     </div>
+
+    <div id="welcomeMessage" class="welcome-msg"></div>
+
     <nav class="sidebar-nav">
+      <button onclick="location.href='home.html'">Home</button>
       <button onclick="location.href='create.html'">Create Puzzle</button>
       <button onclick="location.href='leaderboard.html'">Leaderboard</button>
+      <button onclick="location.href='profile.html'">Profile</button>
     </nav>
   </aside>
 
@@ -25,29 +30,26 @@
 
     <!-- Top Navigation -->
     <header class="top-nav">
-      <input type="text" placeholder="Search puzzles..." id="searchBar">
+      <div class="search-bar-container">
+        <input type="text" placeholder="Search by Name or Author..." id="searchBar">
+        <button onclick="searchPuzzles()">Search Ciphers</button>
+      </div>
       <div class="nav-links">
-        <a href="create.html">Create</a>
-        <a href="leaderboard.html">Leaderboard</a>
-        <a href="profile.html">Profile</a>
-        <a href="signin.html" class="auth-link">Sign In / Register</a>
+        <a href="index.html" class="auth-link">Logout</a>
       </div>
     </header>
+    
 
     <!-- Puzzle Feed -->
     <section class="puzzle-feed" id="puzzleFeed">
-      <!-- Puzzles will be inserted here dynamically with JavaScript -->
-      <div class="puzzle-card">
-        <h2>Puzzle Title</h2>
-        <p>Difficulty: Easy</p>
-        <button>Play</button>
-      </div>
 
-      <!-- More puzzles... -->
     </section>
 
   </main>
 
-  <script src="main.js"></script> <!-- your JavaScript file -->
+  <script src="../js/home.js"></script> 
+
+  
+
 </body>
 </html>

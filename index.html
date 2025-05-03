@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login | Cipher Hunter</title>
   <link rel="stylesheet" href="../css/styles.css">
+  <script>
+    localStorage.removeItem("username");
+  </script>
 </head>
 <body class="login-page">
 
@@ -24,11 +27,61 @@
       </div>
 
       <div class="form-buttons">
-        <button type="submit" class="login-button">Login</button>
+        <button type="submit" class="login-button" onclick="validateLogin(event)">Login</button>
         <button type="button" class="signup-button" onclick="location.href='register.html'">Sign Up</button>
       </div>
     </form>
   </div>
+
+  <script>
+    function validateLogin(event) {
+      event.preventDefault(); 
+  
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+  
+      if (!username || !password) {
+        alert("Please enter both username and password.");
+        return;
+      }
+  
+      // for testinggg purposesssesssesss
+      console.log("login request: ", { username, password });
+  
+      let xhr = new XMLHttpRequest();
+      xhr.addEventListener("load", function() {
+        try {
+          let data = JSON.parse(this.responseText);
+  
+        
+          const userMatch = data.find(item => 
+            item.username === username &&
+            item.password === password
+          );
+  
+          if (userMatch) {
+            alert("Login successful!");
+
+            localStorage.setItem("username", username);
+            
+            window.location.href = "home.html";
+          } else {
+            alert("Invalid username or password.");
+          }
+  
+        } catch (error) {
+          console.error("Failed to parse response:", error);
+          alert("An error occurred while logging in.");
+        }
+      });
+  
+      xhr.open("GET", "https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items");
+      xhr.send();
+
+    }
+  </script>
+  
+  
 
 </body>
 </html>

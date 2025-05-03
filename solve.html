@@ -1,38 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="../css/header.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cipher Hunter - Solve</title>
+  <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
 
-      <!--Header-->
-      <header class="mainHeader">
-        <nav class="HeaderNav">
-            <a href="home.html"><img src="../images/home.png" alt="home"></a>
-            <!-- <a href="settings.html"><img src="../images/settings.png" alt="settings"></a> -->
-            <a href="#" id="settings-btn">
-                <img src="../images/settings.png" alt="settings">
-            </a>
-            
-            <div id="settings-dropdown" class="settings-dropdown hidden">
-                <!-- Settings Header -->
-                <div class="settings-header">
-                  <strong>Settings</strong>
-                </div>
-              
-                
-                <!-- Logout Option -->
-                <button id="logout-btn" onclick="logoutUser()">Logout</button>
-              </div>
-              
-            <a href="profile.html"><img src="../images/profile.png" alt="profile"></a>
-        </nav>
-        <h1 class="pageNameLabel">Solve</h1>
-        <label class="coinsLabel" id="coins">Coins: </label>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/fedora-logo.png" alt="Cipher Hunter Logo" />
+      <h1>Cipher Hunter</h1>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button onclick="location.href='home.html'">Home</button>
+      <button onclick="location.href='create.html'">Create Puzzle</button>
+      <button onclick="location.href='leaderboard.html'">Leaderboard</button>
+      <button onclick="location.href='profile.html'">Profile</button>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="nav-links">
+        <a href="index.html" class="auth-link">Logout</a>
+      </div>
     </header>
-  
+
+    <!-- Solve Puzzle Container -->
+    <section class="solve-container">
+      <h2 id="cipherTitle">Loading Puzzle...</h2>
+      <p><strong>Author:</strong> <span id="cipherAuthor"></span></p>
+      <p><strong>Type:</strong> <span id="cipherType"></span></p>
+      <p><strong>Cipher Text:</strong></p>
+      <p id="cipherText" style="background:#333;padding:1rem;border-radius:6px;"></p>
+      <p><strong>Hint:</strong></p>
+      <p id="cipherHint" style="background:#222;padding:0.8rem;border-radius:6px;font-style:italic;"></p>
+
+      <input type="text" id="solutionInput" placeholder="Enter your solution..." />
+      <button onclick="submitSolution()">Submit</button>
+      <p id="feedbackMsg" style="margin-top:1rem;"></p>
+    </section>
+
+  </main>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const puzzleId = urlParams.get("id");
+
+    const username = localStorage.getItem("username");
+
+    let currentPuzzle = null;
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (!puzzleId) {
+        document.getElementById("cipherTitle").textContent = "No puzzle selected.";
+        return;
+      }
+
+      fetch("https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items")
+        .then(res => res.json())
+        .then(data => {
+          currentPuzzle = data.find(p => p.id === puzzleId);
+          if (!currentPuzzle) {
+            document.getElementById("cipherTitle").textContent = "Puzzle not found.";
+            return;
+          }
+
+          document.getElementById("cipherTitle").textContent = currentPuzzle.ciphername;
+          document.getElementById("cipherAuthor").textContent = currentPuzzle.cipherauthor;
+          document.getElementById("cipherType").textContent = currentPuzzle.ciphertype;
+          document.getElementById("cipherText").textContent = currentPuzzle.ciphertext;
+
+          if (currentPuzzle.cipherhint) {
+            document.getElementById("cipherHint").textContent = currentPuzzle.cipherhint;
+          } else {
+            document.getElementById("cipherHint").style.display = "none";
+          }
+
+        })
+        .catch(err => {
+          console.error("Error fetching puzzle:", err);
+        });
+    });
+
+
+
+    function submitSolution() {
+  const input = document.getElementById("solutionInput").value.trim();
+  const feedback = document.getElementById("feedbackMsg");
+
+  if (!currentPuzzle || !currentPuzzle.ciphermessage) {
+    feedback.style.color = "orange";
+    feedback.textContent = "Puzzle not loaded correctly.";
+    return;
+  }
+
+  let solvedByArray = [];
+
+  if (Array.isArray(currentPuzzle.solvedBy)) {
+    solvedByArray = currentPuzzle.solvedBy;
+  } else if (typeof currentPuzzle.solvedBy === "string") {
+    // Stringified array case, e.g. '["Alex"]' or 'Alex,Bob'
+    try {
+      solvedByArray = JSON.parse(currentPuzzle.solvedBy);
+    } catch {
+      // fallback for non-JSON string format
+      solvedByArray = currentPuzzle.solvedBy
+        .replace(/[\[\]\s"]/g, "")
+        .split(",")
+        .filter(Boolean);
+    }
+  }
+
+
+  if (currentPuzzle.cipherauthor === username) {
+    feedback.style.color = "orange";
+    feedback.textContent = "You authored this puzzle. Solving your own puzzle won't give points.";
+    return;
+  }
+
+  if (solvedByArray.includes(username)) {
+    feedback.style.color = "orange";
+    feedback.textContent = "You have already solved this puzzle.";
+    return;
+  }
+
+  if (input.toLowerCase() === currentPuzzle.ciphermessage.toLowerCase()) {
+    feedback.style.color = "lime";
+    feedback.textContent = "Correct! +100 points";
+
+    // Add the user's username to the solvedBy array
+    solvedByArray.push(username);
+
+    //update user info
+    fetch("https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items")
+      .then(res => res.json())
+      .then(data => {
+        const user = data.find(u => u.username === username);
+
+        if (!user) {
+          console.error("User not found.");
+          feedback.style.color = "red";
+          feedback.textContent = "User not found. Score not updated.";
+          return;
+        }
+
+        const newScore = (parseInt(user.userScore) || 0) + 100;
+        user.userScore = newScore;
+
+        const newPuzzlesSolved = user.puzzlesSolved + 1;
+
+        const updatedUserData = JSON.stringify({
+          id: user.id,
+          username: user.username,
+          password: user.password,
+          userScore: newScore,
+          ciphername: null,
+          ciphertype: null,
+          ciphermessage: null,
+          ciphertext: null,
+          cipherhint: null,
+          cipherauthor: null,
+          puzzlesSolved: newPuzzlesSolved,
+          solvedBy: null
+        });
+
+        const userXhr = new XMLHttpRequest();
+        userXhr.open("PUT", "https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items");
+        userXhr.setRequestHeader("Content-Type", "application/json");
+
+        userXhr.onload = function () {
+          if (userXhr.status >= 200 && userXhr.status < 300) {
+            console.log("User score updated:", userXhr.responseText);
+          } else {
+            console.error("Failed to update user score:", userXhr.status, userXhr.responseText);
+          }
+        };
+
+        userXhr.onerror = function () {
+          console.error("Network error while updating score:", userXhr.statusText);
+        };
+
+        userXhr.send(updatedUserData);
+      })
+      .catch(err => {
+        console.error("Error fetching user data:", err);
+      });
+
+
+    // Update the solvedBy array in the currentPuzzle object
+    currentPuzzle.solvedBy = solvedByArray;
+    console.log(currentPuzzle.solvedBy);
+
+    const data = JSON.stringify({
+        id: currentPuzzle.id,
+        username: null,
+        password: null,
+        userScore: null,
+        ciphername: currentPuzzle.ciphername,
+        ciphertype: currentPuzzle.ciphertype,
+        ciphermessage: currentPuzzle.ciphermessage,
+        ciphertext: currentPuzzle.ciphertext,
+        cipherhint: currentPuzzle.cipherhint,
+        cipherauthor: username,
+        puzzlesSolved: null,
+        solvedBy: JSON.stringify(solvedByArray)
+    });
+
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("PUT", "https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items");
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        console.log("SolvedBy updated:", xhr.responseText);
+        feedback.style.color = "lime";
+        feedback.textContent = "Correct! +100 points. Solution recorded.";
+      } else {
+        console.error("Update failed:", xhr.status, xhr.responseText);
+        feedback.style.color = "red";
+        feedback.textContent = "Solution correct, but failed to record it.";
+      }
+    };
+
+    xhr.onerror = function () {
+      console.error("Network error:", xhr.statusText);
+      feedback.style.color = "red";
+      feedback.textContent = "Network error occurred.";
+    };
+
+    xhr.send(data);
+
+
+
+  } else {
+    feedback.style.color = "red";
+    feedback.textContent = "Incorrect. Try again.";
+  }
+}
+
+  </script>
+
 </body>
 </html>

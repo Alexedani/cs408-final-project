@@ -8,31 +8,34 @@
 </head>
 <body>
 
-  <div class="sidebar">
+  <aside class="sidebar">
     <div class="logo">
-      <img src="../images/fedora-logo.png" alt="Cipher Hunter Logo">
+      <img src="images/fedora-logo.png" alt="Cipher Hunter Logo" />
       <h1>Cipher Hunter</h1>
     </div>
-    <div class="sidebar-nav">
+
+    <nav class="sidebar-nav">
       <button onclick="location.href='home.html'">Home</button>
+      <button onclick="location.href='create.html'">Create Puzzle</button>
       <button onclick="location.href='leaderboard.html'">Leaderboard</button>
       <button onclick="location.href='profile.html'">Profile</button>
-      <button onclick="location.href='settings.html'">Settings</button>
-    </div>
-  </div>
+    </nav>
+  </aside>
 
   <div class="main-content">
     <div class="top-nav">
-      <input type="text" placeholder="Search players..." id="searchBar">
-      <div class="nav-links">
-        <a href="#">Login</a>
-        <a href="#">Register</a>
+      <div class="search-group">
+        <input type="text" placeholder="Search players..." id="searchBar">
+        <button onclick="searchPlayer()">Search</button>
       </div>
+      <button class="logout-button" onclick="logout()">Logout</button>
     </div>
+    
+    
 
     <div class="leaderboard-section">
       <h1>Leaderboard</h1>
-      <table class="leaderboard-table">
+      <table class="leaderboard-table" id="leaderboard">
         <thead>
           <tr>
             <th>Rank</th>
@@ -42,30 +45,90 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>CodeMasterX</td>
-            <td>1250</td>
-            <td>58</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>EnigmaQueen</td>
-            <td>1180</td>
-            <td>54</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>ShadowSolver</td>
-            <td>1100</td>
-            <td>50</td>
-          </tr>
-          <!-- You can add more players here -->
+
         </tbody>
       </table>
     </div>
 
   </div>
+
+  <script>
+    function fillLeaderboardTable() {
+    const table = document.getElementById("leaderboard");
+    const tbody = table.querySelector("tbody");
+    tbody.innerHTML = ""; // Clear current rows
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", function () {
+      const data = JSON.parse(this.responseText);
+
+      let validPlayers = data.filter(player => player.username); // Only include players with valid usernames
+
+      validPlayers.sort((a, b) => b.userScore - a.userScore); // Sort descending by points
+
+      validPlayers.forEach((player, index) => {
+        let row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${player.username}</td>
+          <td>${player.userScore}</td>
+          <td>${player.puzzlesSolved}</td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      if (validPlayers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">No players to display</td></tr>`;
+      }
+    });
+
+    xhr.open("GET", "https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items");
+    xhr.send();
+  }
+
+  function searchPlayer() {
+  const table = document.getElementById("leaderboard");
+  const input = document.getElementById("searchBar");
+
+  const searchTerm = input.value.trim().toLowerCase();
+  const tbody = table.querySelector("tbody");
+  tbody.innerHTML = "";
+
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", function () {
+    const data = JSON.parse(this.responseText);
+
+    const filtered = data
+      .filter(player => player.username && player.username.toLowerCase().includes(searchTerm))
+      .sort((a, b) => b.userScore - a.userScore);
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4">No players found</td></tr>`;
+      return;
+    }
+
+    filtered.forEach((player, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${player.username}</td>
+        <td>${player.userScore}</td>
+        <td>${player.puzzlesSolved}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  });
+
+  xhr.open("GET", "https://fk7oe7bqme.execute-api.us-east-2.amazonaws.com/items");
+  xhr.send();
+}
+
+
+    function logout(){
+      window.location = '../index.html';
+    }
+    window.addEventListener("DOMContentLoaded", fillLeaderboardTable);
+  </script>
 
 </body>
 </html>

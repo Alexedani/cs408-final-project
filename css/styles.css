@@ -345,4 +345,146 @@
     background-color: #e6c200;
   }
   
+  .welcome-msg {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffd700;         
+    margin: 10px;
+    text-align: center;     
+  }
+
+  .top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .search-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .search-group input[type="text"] {
+    width: 200px;
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+  
+  .search-group button,
+  .logout-button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white; 
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .search-group button:hover,
+  .logout-button:hover {
+    background-color: #555;
+  }
+  
+  .top-nav {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+  }
+  
+  .search-bar-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  #searchBar {
+    margin-right: 10px; 
+    padding: 5px;
+  }
+  
+  button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white; 
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #45a049; /* Hover effect */
+  }
+  
+  .user-stats {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .user-stats h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #f4efef;
+  }
+  
+  .stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .stat-card {
+    background-color: #f0f0f0;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 180px;
+  }
+  
+  .stat-card h3 {
+    margin: 0;
+    color: #444;
+    font-size: 1.2rem;
+  }
+  
+  .stat-card p {
+    margin: 0;
+    font-size: 2rem;
+    color: #2a9d8f;
+    font-weight: bold;
+  }
+  .solve-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #1e1e2f;
+    border-radius: 12px;
+    color: white;
+  }
+  .solve-container h2 {
+    margin-bottom: 1rem;
+  }
+  .solve-container p {
+    margin: 0.5rem 0;
+  }
+  .solve-container input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+  }
+  .solve-container button {
+    padding: 0.75rem 1.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  
   
